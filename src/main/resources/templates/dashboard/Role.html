@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Hotel Booking</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="vendors/css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="vendors/main.css">
+
+
+</head>
+
+<body class="crm_body_bg">
+
+	<!-- loader_refresh -->
+	<div th:replace="dashboard/personalProfile::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="dashboard/personalProfile::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+
+	<div th:replace="dashboard/personalProfile::sidebar">...</div>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e6f1f5;">
+		<!--NAVBAR-->
+		<div th:replace="dashboard/personalProfile::navbar">...</div>
+
+		<div class="main_content_iner " style="background-color: #e6f1f5;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0">Hotel Info</h3>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+									<div class="QA_table mb_30">
+										<form th:action="@{/addRoleInfo}" method="POST" enctype="multipart/form-data"
+											th:object="${roleType}">
+											<div class="card" style="border: 1px solid #F2F2F2;">
+												<div class="card-header">
+													<h5>Basic Info</h5>
+												</div>
+												<div class="card-body">
+													
+													<div class="col-md-12">
+														<div class="row">
+															<label class="col-md-2 col-form-label">
+																Add Role<span
+																	class="text-danger text-danger">*</span></label>
+															<div class="col-md-10">
+																 <input type="text" class="form-control mb-3" style="padding-left: 12px;" id="roleName"
+                            th:field="*{roleName}" name="roleName" required>
+															</div>
+														</div>
+
+														<div class="form-group mb-0 text-right btnsave"
+															style="text-align: right !important;">
+															  <button type="submit" class="btn btn-sm" style="background-color: #30778A;color: white;">Save</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+
+	
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+
+
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+
+
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

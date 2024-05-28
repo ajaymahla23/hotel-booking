@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Hotel Booking</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="vendors/css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="vendors/main.css">
+</head>
+
+<!--popup form-->
+
+<style>
+	#addAmount {
+		width: 25%;
+
+
+		display: none;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		padding: 20px;
+		border: 1px solid #ccc;
+		z-index: 1000;
+	}
+
+	/* Full-width input fields */
+	.form-container input[type=text],
+	.form-container input[type=password] {
+		border: none;
+		background: #f1f1f1;
+	}
+
+	/* Set a style for the submit/login button */
+	.form-container .btn {
+		background-color: goldenrod;
+		color: white;
+		border: none;
+		cursor: pointer;
+		margin-bottom: 10px;
+	}
+
+	/* Add a red background color to the cancel button */
+	.form-container .cancel {
+		background-color: goldenrod;
+	}
+
+	.editbutton {
+		padding: 5px 15px 5px 15px;
+		border-radius: 5px;
+		border-color: orange;
+		background-color: orange;
+		color: white;
+	}
+
+	.editbutton:hover {
+		color: black;
+	}
+</style>
+
+<body class="crm_body_bg">
+
+	<!-- loader_refresh -->
+	<div th:replace="dashboard/personalProfile::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="dashboard/personalProfile::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+
+	<div th:replace="dashboard/personalProfile::sidebar">...</div>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e4eaf0;">
+		<!--NAVBAR-->
+		<div th:replace="dashboard/personalProfile::navbar">...</div>
+
+		<div class="main_content_iner " style="background-color: #e4eaf0;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header" style="padding: 22px 34px; margin-bottom: -25px;">
+								<div class="row box_header m-0">
+									<div class="col-md-6 main-title">
+										<h3 class="m-0">Withdrawal Request Detail
+										</h3>
+									</div>
+
+									<!--<div class="col-md-6 add_button" style="float: right;">
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+											data-bs-target="#exampleModalCenter" onclick="history.back()"
+											style="background-color: #30778A;border: none;float: right;">Go
+											Back</button>
+									</div>-->
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+
+									<div class="QA_table mb_30">
+										<table class="table lms_table_active" id="serialNumber">
+											<thead>
+												<tr>
+													<!--<th>#</th>
+													<th scope="col">
+														<input type="checkbox" onClick="toggle(this)" />
+													</th>-->
+													<th scope="col">ID</th>
+													<th scope="col">Username</th>
+													<th scope="col">Mobile No.</th>
+													<th scope="col">type</th>
+													<th scope="col">amount</th>
+													<th scope="col">Bank Name</th>
+													<th scope="col">Bank card no.</th>
+													<th scope="col">Cardholder</th>
+													<th scope="col">Bank phone no.</th>
+													<th scope="col">Branch</th>
+													<th scope="col">Status</th>
+													<th scope="col">Time</th>
+													<th scope="col">operate</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="withdraw,iter  : ${withdrawRequest}">
+													<!--<th scope="row"> <a href="#" class="question_content"></a>
+													</th>
+													<td><input type="checkbox" name="id[]" th:value="${withdraw.id}" />
+													</td>-->
+													<td th:text="${withdraw.id}"></td>
+													<td th:text="${withdraw.user.email}"></td>
+													<td th:text="${withdraw.user.mobileNumber}"></td>
+													<td>type</td>
+													<td th:text="${withdraw.withdrawAmout}"></td>
+													<td th:text="${withdraw.myBankCard.bankName}"></td>
+													<td th:text="${withdraw.myBankCard.creditCardNumber}"></td>
+													<td th:text="${withdraw.myBankCard.loginName}"></td>
+													<td th:text="${withdraw.myBankCard.loginMobileNumer}"></td>
+													<td th:text="${withdraw.myBankCard.branch}"></td>
+													<td th:if="${withdraw.status}=='Y'" style="color: darkgreen;">
+														Order successful </td>
+													<td th:if="${withdraw.status}=='N'" style="color: red;">Not yet
+														approved
+													</td>
+													<td th:text="${#dates.format(withdraw.date, 'dd-MM-yyyy')}"></td>
+													<td th:if="${withdraw.status}=='N'"><button
+															th:attr="onclick='addAmountForm(\'' + ${withdraw.id} + '\'  ,\'' + ${withdraw.user.email} + '\',\'' + ${withdraw.withdrawAmout} + '\' )'"
+															class="editbutton"
+															style="background-color: orangered;border-color: orangered;"><span>Pending</span></button>
+													</td>
+
+													<td th:if="${withdraw.status}=='Y'"><button class="editbutton"
+															style="background-color: mediumseagreen ;border-color: mediumseagreen;">Approved</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- The Popup Form -->
+		<div id="addAmount">
+			<form th:action="@{/addAmountforWithdraw}" method="post" class="form-container">
+				<label for="withdrawid">Withdraw Request ID:</label><br>
+				<input type="text" id="withdrawid" name="withdrawid"><br>
+
+				<label for="name">User Name:</label><br>
+				<input type="text" id="name" name="name"><br>
+				<label for="amount"> Withdraw Amount:</label><br>
+				<input type="text" id="amount" name="amount"><br>
+				<div class="modal-footer justify-content-end">
+					<button type="button" class="btn cancel" onclick="closeForm3()">Close</button>
+					<button type="submit" class="btn">Approved</button>
+				</div>
+			</form>
+		</div>
+
+
+
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+
+
+	<script>
+		function addAmountForm(withdrawid, userName, amount) {
+			// Set the values in the popup form
+			document.getElementById('withdrawid').value = withdrawid;
+			document.getElementById('name').value = userName;
+			document.getElementById('amount').value = amount;
+
+			// Open the popup form
+			document.getElementById('addAmount').style.display = 'block';
+		}
+
+		function closeForm3() {
+			// Close the popup form
+			document.getElementById('addAmount').style.display = 'none';
+		}
+	</script>
+
+
+
+	<!--serial number-->
+	<script>
+		let table = document.querySelector("#serialNumber");
+		let rows = table.querySelectorAll("tbody tr");
+		for (let i = 0; i < rows.length; i++) {
+			let firstCell = rows[i].querySelector("td:first-child");
+			firstCell.textContent = i + 1;
+		}
+	</script>
+
+	<!--select single checkbox-->
+	<script>
+		function handleButtonClick() {
+			// Get all the selected checkboxes
+			var checkboxes = document.querySelectorAll('input[name="id[]"]:checked');
+			var ids = [];
+			for (var i = 0; i < checkboxes.length; i++) {
+				ids.push(checkboxes[i].value);
+			}
+
+			var percentage = document.querySelector('#markUpPercentage').value;
+
+			// Send the selected ids to the server
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/checkboxesClicked');
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Handle successful response
+				}
+			};
+			xhr.send(JSON.stringify({ids: ids, percentage: percentage}));
+
+			setTimeout(function () {
+				location.reload();
+			}, 2000);
+		}
+
+	</script>
+
+	<!--select all checkbox-->
+	<script>
+		function toggle(source) {
+			checkboxes = document.getElementsByName('id[]');
+			for (var i = 0, n = checkboxes.length; i < n; i++) {
+				checkboxes[i].checked = source.checked;
+			}
+		}
+
+	</script>
+
+
+
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

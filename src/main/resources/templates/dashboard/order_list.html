@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Hotel Booking</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="vendors/css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="vendors/main.css">
+
+	<!--popup form-->
+
+	<style>
+		#orderForm {
+			width: 25%;
+
+
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			padding: 20px;
+			border: 1px solid #ccc;
+			z-index: 1000;
+		}
+
+
+
+		/* Set a style for the submit/login button */
+		.form-container .btn {
+			background-color: goldenrod;
+			color: white;
+			border: none;
+			cursor: pointer;
+			margin-bottom: 10px;
+		}
+
+		/* Add a red background color to the cancel button */
+		.form-container .cancel {
+			background-color: goldenrod;
+		}
+	</style>
+</head>
+
+<body class="crm_body_bg">
+
+	<!-- loader_refresh -->
+	<div th:replace="dashboard/personalProfile::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="dashboard/personalProfile::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+
+	<div th:replace="dashboard/personalProfile::sidebar">...</div>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e4eaf0;">
+		<!--NAVBAR-->
+		<div th:replace="dashboard/personalProfile::navbar">...</div>
+
+
+
+
+		<div class="main_content_iner " style="background-color: #e4eaf0;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header" style="padding: 22px 34px; margin-bottom: -25px;">
+								<div class="row box_header m-0">
+									<div class="col-md-6 main-title">
+										<h3 class="m-0">List Of All Orders
+										</h3>
+									</div>
+
+									<!--<div class="col-md-6 add_button" style="float: right;">
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+											data-bs-target="#exampleModalCenter"
+											style="background-color: #30778A;border: none;float: right;">Publish
+											products to
+											the store in bulk
+										</button>
+									</div>-->
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+
+									<div class="QA_table mb_30">
+										<table class="table lms_table_active" id="serialNumber">
+											<thead>
+												<tr>
+
+													<!--<th scope="col">
+														<input type="checkbox" onClick="toggle(this)" />
+													</th>-->
+
+													<th scope="col">ID</th>
+													<th scope="col">Order No.</th>
+													<th scope="col">Nickname</th>
+													<th scope="col">Title of Product</th>
+													<th scope="col">Price of commodity</th>
+													<th scope="col">No. of transactions</th>
+													<th scope="col">Amount of transaction</th>
+													<th scope="col">Commission</th>
+													<th scope="col">Status</th>
+													<th scope="col">Thaw time</th>
+													<th scope="col">Time</th>
+													<th scope="col">operate</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="order : ${myOrderList}">
+													<!--<td><input type="checkbox" /></td>-->
+													<td th:text="${order.id}"></td>
+													<td th:text="${order.orderNumber}"></td>
+													<td th:text="${order.user.fullName}"></td>
+													<td th:text="${order.hotelInfo.hotelName}"></td>
+													<td th:text="${order.hotelInfo.hotelRent}"></td>
+													<td>No transactions</td>
+													<td>total transactions</td>
+													<td>commision</td>
+													<td>
+														<span th:if="${order.ordreStatus}=='R'" style="color: cornflowerblue;">to be review</span>
+														<span th:if="${order.ordreStatus}=='N'" style="color: darkred;">order cancel</span>
+														<span th:if="${order.ordreStatus}=='Y'" style="color: darkgreen;">order successful</span>
+													</td>
+
+													<td>
+														<span
+															th:if="${#dates.format(order.approvalDate,'dd-MM-yyyy')}==null" style="color: darkgreen;">to
+															be review</span>
+														<span
+															th:if="${#dates.format(order.approvalDate,'dd-MM-yyyy')}!=null"
+															th:text="${#dates.format(order.approvalDate,'dd-MM-yyyy')}"></span>
+													</td>
+													</td>
+													<td th:text="${#dates.format(order.date,'dd-MM-yyyy')}"></td>
+													<td><button
+															th:attr="onclick='approveOrderForm(\'' + ${order.id} + '\'  ,\'' + ${order.orderNumber} + '\' ,\'' + ${order.user.fullName} + '\',\'' + ${order.hotelInfo.hotelName} + '\'
+															,\'' + ${order.hotelInfo.hotelRent} + '\',\'' + ${order.ordreStatus} + '\',\'' + ${order.approvalDate} + '\',\'' + ${order.date} + '\')'"><i
+																class="bi bi-pencil-square"></i></button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+
+	<!-- The Popup Form -->
+	<div id="orderForm">
+		<form class="form-container">
+			<div>
+				<label for="id">Order ID:</label>
+				<input type="text" id="id" name="id" class="form-control" readonly>
+			</div>
+			<div>
+				<label class="col-md-4" for="orderNumber">Order Number</label>
+				<input type="text" id="orderNumber" name="orderNumber" class="form-control" readonly>
+			</div>
+			<div>
+				<label class="col-md-4" for="fullName">User Name:</label>
+				<input type="text" id="fullName" name="fullName" class="form-control" readonly>
+			</div>
+			<div>
+				<label class="col-md-4" for="hotelName">Hotel Name</label>
+				<input type="text" id="hotelName" name="hotelName" class="form-control" readonly>
+			</div>
+
+			<div>
+				<label class="col-md-4" for="hotelRent">Rent</label>
+				<input type="text" id="hotelRent" name="hotelRent" class="form-control" readonly>
+			</div>
+			<div>
+				<label class="col-md-4" for="ordreStatus">Status</label>
+				<input type="text" id="ordreStatus" name="ordreStatus" class="form-control" readonly>
+			</div>
+			<div>
+				<label class="col-md-4" for="approvalDate">Approval date</label>
+				<input type="text" id="approvalDate" name="approvalDate" class="form-control">
+			</div>
+			<div>
+				<label class="col-md-4" for="date">Time</label>
+				<input type="text" id="date" name="date" class="form-control">
+			</div>
+
+			<div class="modal-footer justify-content-end">
+				<button type="button" class="btn cancel" onclick="closeForm3()">Close</button>
+				<button type="submit" class="btn">Save</button>
+			</div>
+		</form>
+	</div>
+
+
+	<script>
+		function approveOrderForm(id, orderNumber, fullName, hotelName, hotelRent, ordreStatus, approvalDate, date) {
+			// Set the values in the popup form
+			document.getElementById('id').value = id;
+			document.getElementById('orderNumber').value = orderNumber;
+			document.getElementById('fullName').value = fullName;
+			document.getElementById('hotelName').value = hotelName;
+			document.getElementById('hotelRent').value = hotelRent;
+			document.getElementById('ordreStatus').value = ordreStatus;
+			document.getElementById('approvalDate').value = approvalDate;
+			document.getElementById('date').value = date;
+
+			// Open the popup form
+			document.getElementById('orderForm').style.display = 'block';
+		}
+
+		function closeForm3() {
+			// Close the popup form
+			document.getElementById('orderForm').style.display = 'none';
+		}
+	</script>
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

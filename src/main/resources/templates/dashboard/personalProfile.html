@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Admin Panel</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="vendors/css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="vendors/main.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body class="crm_body_bg">
+
+
+	<!--loader -->
+
+	<div id="loader-wrapper" th:fragment="loader_refresh">
+		<div id="loader"></div>
+
+		<style>
+			#loader-wrapper {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				background-color: rgba(255, 255, 255, 1);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 1000;
+			}
+
+			#loader {
+				border: 10px solid #f3f3f3;
+				border-top: 10px solid #3498db;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 1s linear infinite;
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(180deg);
+				}
+
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		</style>
+
+
+		<script defer>
+			document.addEventListener('DOMContentLoaded', function () {
+				var loaderWrapper = document.getElementById('loader-wrapper');
+				var mainContent = document.getElementById('main-content');
+
+				function hideLoader() {
+					loaderWrapper.style.display = 'none';
+					mainContent.style.display = 'block';
+				}
+
+				window.addEventListener('load', hideLoader);
+			});
+		</script>
+
+
+
+	</div>
+
+
+
+
+	<!-- mobile menu area start -->
+	<div id="tp-bottom-menu-sticky" class="tp-mobile-menu d-lg-none" th:fragment="mobile_bottom_menu">
+		<link rel="stylesheet" href="vendors/main.css">
+		<div class="container">
+			<div class="row row-cols-4">
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/mainpanel}" class="tp-mobile-item-btn">
+							<i class="bi bi-shop"></i>
+							<span>Seller</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/product}" class="tp-mobile-item-btn">
+							<i class="bi bi-clipboard-plus"></i>
+							<span>Products</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/orderlist}" class="tp-mobile-item-btn">
+							<i class="bi bi-card-list"></i>
+							<span>Orders</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/wallet}" class="tp-mobile-item-btn">
+							<i class="bi bi-wallet-fill"></i>
+							<span>Wallet</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- mobile menu area end -->
+
+	<nav class="sidebar" th:fragment="sidebar">
+		<div class="logo d-flex justify-content-center align-items-center"
+			style="background-color: #3b5775;padding: 0px; margin-bottom: 1px;">
+			<a class="large_logo" th:href="@{/mainpanel}">
+				<!--<img src="vendors/logo/fsast_shop.png" alt="Large Logo">-->
+				<img src="vendors/logo/pay.png" width="100" style="width: 178px;" alt="Large Logo">
+			</a>
+			<a class="small_logo" th:href="@{/mainpanel}">
+				<img src="vendors/logo/fsast_shop.png" width="120" alt="Small Logo">
+			</a>
+			<div class="sidebar_close_icon d-lg-none">
+				<i class="bi bi-x"></i>
+			</div>
+		</div>
+
+		<style>
+			.header_iner {
+				padding: 0px;
+				border-radius: 0px;
+				margin: 0px 0px 0;
+			}
+		</style>
+
+		<ul id="sidebar_menu">
+			<li>
+				<div class="p-3 text-xl-center" style="border-radius: 1px ;background-color: #343A40;">
+					<img src="vendors/logo/contact.png" width="70" alt="Large Logo" style="border-radius: 50px;"><br>
+					<div><span class="text-white">online&nbsp;<span
+								style="color: green;font-size: 15px;">●</span></span></div>
+					<!--<form th:object="${logoImg}">
+						<img th:if="${logoImg} !=null" style="border-radius: 50%;"
+							th:src="@{/shoplogo/{imageName}(imageName=${logoImg.shopLogo})}" width="70" />
+						<img th:if="${logoImg} ==null" th:src="@{/img/contact.png}" width="70">
+					</form>
+					<h5 class="mt-2" style="color: white;font-size: 16px;font-weight: 500;" th:text="${username}"></h5>
+					<h6 style="color: white;font-size: 16px;font-weight: 500;"><span
+							th:text="#{dashboard.addpromty}">ID</span><span th:text="': ' + ${user_code}"></span> </h6>-->
+				</div>
+			</li>
+
+			<li>
+				<a th:href="@{/personal-profile}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-home aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Personal Profile </span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/membership-management}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Membership Management</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/reachargeWalletlist}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Recharge List</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/payout}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Payout Management</span>
+					</div>
+				</a>
+			</li>
+
+			<!--<li>
+				<a th:href="@{/merchant-user}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Merchant User</span>
+					</div>
+				</a>
+			</li>-->
+
+			<li>
+				<a th:href="@{/orderlist}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>List of orders</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/transaction}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Transaction Flow</span>
+					</div>
+				</a>
+			</li>
+
+
+
+
+
+			<li>
+				<a th:href="@{/hotelInfo}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Hotel info</span>
+					</div>
+				</a>
+			</li>
+
+
+
+			<!--	<li>
+				<a th:href="@{/view-roles}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span>Roles</span>
+					</div>
+				</a>
+			</li>-->
+
+		</ul>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg" style="padding-bottom: 1px;">
+		<div class="container-fluid g-0" th:fragment="navbar">
+			<div class="row" style="--bs-gutter-x: 0;">
+				<div class="col-lg-12 p-0">
+					<div class="header_iner d-flex justify-content-between align-items-center"
+						style="background-color: #3b5775;">
+						<div class="sidebar_icon d-lg-none">
+							<i class="bi bi-list" style="color: white;"></i>
+						</div>
+						<label class="form-label switch_toggle d-none d-lg-block" for="checkbox">
+							<input type="checkbox" id="checkbox">
+							<div class="slider round open_miniSide" style="border-color:white;display: none;"></div>
+						</label>
+						<div class="header_right d-flex justify-content-between align-items-center">
+							<div class="text-center  d-flex align-items-center m-4">
+								<form th:action="@{/signoutbyshop}" method="post">
+									<input type="hidden" style="color: white; text-decoration: none;" value="0"
+										name="signout">
+									<button type="submit" id="signout"
+										class="text-reset d-inline-block opacity-60 py-2"><span
+											style="color: white;font-size: 18x;"><i class="bi bi-box-arrow-left"></i></span></button>
+								</form>
+							</div>
+							<style>
+								#signout {
+									border: none;
+									text-align: center;
+									text-decoration: none;
+									font-size: 14px;
+									cursor: pointer;
+									background-color: #3b5775;
+								}
+							</style>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<style>
+			@media (max-width: 767px) {
+				.show-desktop {
+					display: none;
+				}
+			}
+		</style>
+
+
+		<div class="main_content_iner " style="background-color: #e4eaf0;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-12">
+						<div class="dashboard_header mb_50">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="dashboard_header_title">
+										<h3>Personal Information</h3>
+									</div>
+								</div>
+								<!--<div class="col-lg-6">
+									<div class="dashboard_breadcam text-end">
+										<p><a href="index.html">Dashboard</a> <i class="fas fa-caret-right"></i> Chat
+										</p>
+									</div>
+								</div>-->
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="messages_box_area">
+							<div class="messages_list">
+								<div class="white_box ">
+									<div class="white_box_tittle list_header">
+										<h4>Personal Information</h4>
+									</div>
+
+									<div class="card custom-card">
+										<div class="card-profile"><img class="rounded-circle" src="img/profilebox/7.jpg"
+												alt data-original-title title></div>
+										<div class="text-center profile-details">
+											<h4 th:text="${userAdmin.fullName}"></h4>
+											<h6>Admin</h6>
+										</div>
+									</div>
+									<div class="white_card_body">
+										<form>
+											<div class="mb-3">
+												<label class="form-label" for="fullName">Name</label>
+												<input type="text" th:value="${userAdmin.fullName}" readonly>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="email">Email</label>
+												<input type="text" th:value="${userAdmin.email}" readonly>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="mobileNumber">Phone Number</label>
+												<input type="text" th:value="${userAdmin.mobileNumber}" readonly>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="password">Password</label>
+												<input type="text" th:value="${userAdmin.password}" readonly>
+											</div>
+
+											<!--<button type="submit" class="btn btn-primary">Submit</button>-->
+										</form>
+									</div>
+
+								</div>
+							</div>
+							<div class=" mb_30">
+								<div class="white_box ">
+									<table class="table table-striped table-hover">
+										<thead class="thead-light">
+											<tr>
+												<th scope="col">ID</th>
+												<th scope="col">Nickname</th>
+												<th scope="col">username</th>
+												<th scope="col">Mobile No.</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="user,iter  : ${userList}">
+												<td th:text="${user.invitationCode}"></td>
+												<td th:text="${user.fullName}"></td>
+												<td th:text="${user.email}"></td>
+												<td th:text="${user.mobileNumber}"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>
